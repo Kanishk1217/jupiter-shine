@@ -7,6 +7,26 @@ interface CorrelationHeatmapProps {
 }
 
 const CorrelationHeatmap = ({ data }: CorrelationHeatmapProps) => {
+  const calculateCorrelation = (x: number[], y: number[]) => {
+    const n = Math.min(x.length, y.length);
+    const meanX = x.reduce((a, b) => a + b, 0) / n;
+    const meanY = y.reduce((a, b) => a + b, 0) / n;
+    
+    let numerator = 0;
+    let denomX = 0;
+    let denomY = 0;
+    
+    for (let i = 0; i < n; i++) {
+      const diffX = x[i] - meanX;
+      const diffY = y[i] - meanY;
+      numerator += diffX * diffY;
+      denomX += diffX * diffX;
+      denomY += diffY * diffY;
+    }
+    
+    return numerator / Math.sqrt(denomX * denomY);
+  };
+
   const { correlationMatrix, numericHeaders } = useMemo(() => {
     const numericHeaders = data.headers.filter((header) => {
       const firstValue = data.rows[0]?.[header];
@@ -33,26 +53,6 @@ const CorrelationHeatmap = ({ data }: CorrelationHeatmapProps) => {
 
     return { correlationMatrix: matrix, numericHeaders };
   }, [data]);
-
-  const calculateCorrelation = (x: number[], y: number[]) => {
-    const n = Math.min(x.length, y.length);
-    const meanX = x.reduce((a, b) => a + b, 0) / n;
-    const meanY = y.reduce((a, b) => a + b, 0) / n;
-    
-    let numerator = 0;
-    let denomX = 0;
-    let denomY = 0;
-    
-    for (let i = 0; i < n; i++) {
-      const diffX = x[i] - meanX;
-      const diffY = y[i] - meanY;
-      numerator += diffX * diffY;
-      denomX += diffX * diffX;
-      denomY += diffY * diffY;
-    }
-    
-    return numerator / Math.sqrt(denomX * denomY);
-  };
 
   const getColor = (value: number) => {
     const absValue = Math.abs(value);
