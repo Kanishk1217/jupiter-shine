@@ -8,6 +8,10 @@ import FileUpload from "@/components/FileUpload";
 import DataPreview from "@/components/DataPreview";
 import StatisticsPanel from "@/components/StatisticsPanel";
 import VisualizationPanel from "@/components/VisualizationPanel";
+import CorrelationHeatmap from "@/components/CorrelationHeatmap";
+import DistributionPlots from "@/components/DistributionPlots";
+import BoxPlots from "@/components/BoxPlots";
+import MLAnalysis from "@/components/MLAnalysis";
 
 export interface CSVData {
   headers: string[];
@@ -84,7 +88,11 @@ const Index = () => {
 
             <DataPreview data={csvData} />
             <StatisticsPanel data={csvData} />
+            <CorrelationHeatmap data={csvData} />
+            <DistributionPlots data={csvData} />
             <VisualizationPanel data={csvData} />
+            <BoxPlots data={csvData} />
+            <MLAnalysis data={csvData} />
           </div>
         )}
       </main>
